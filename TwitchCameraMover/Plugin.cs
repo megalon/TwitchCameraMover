@@ -7,7 +7,7 @@ namespace TwitchCameraMover
     public class Plugin : IPlugin
     {
         public string Name => "TwitchCameraMover";
-        public string Version => "0.0.1";
+        public string Version => "0.1.0";
         public static Plugin Instance = null;
 
         private static bool debug = true;
@@ -72,9 +72,10 @@ namespace TwitchCameraMover
             if (logLevel == LogLevel.Debug && debug)
             {
                 Console.WriteLine("[TwitchCameraMover] " + text);
-            } else
+            }
+            else
             {
-                Console.WriteLine("[TwitchCameraMover] " + text);
+                Console.WriteLine("[TwitchCameraMover - " + logLevel + "] " + text);
             }
         }
     }
