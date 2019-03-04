@@ -13,6 +13,7 @@ namespace TwitchCameraMover
         public static CameraMover Instance;
         private Transform cam;
         private Vector3 lookAtPosition = new Vector3(0, 1f, 0f);
+        //public Vector3 targetPosition;
         public Queue<SlideAction> slideActionQueue = null;
         public SlideAction currentSlideAction = null;
         public GameObject objToLookAt;
@@ -74,7 +75,7 @@ namespace TwitchCameraMover
             }
         }
 
-        public void SceneManagerOnActiveSceneChanged(Scene oldScene, Scene newScene)
+        public void SceneManagerOnActiveSceneChanged( Scene oldScene, Scene newScene)
         {
             if (newScene.name == "GameCore")
             {
@@ -95,18 +96,18 @@ namespace TwitchCameraMover
                 Plugin.Log("Could not update CameraMover, cam is null!", Plugin.LogLevel.Error);
                 return;
             }
-
+            
             if (currentSlideAction == null)
             {
                 if (slideActionQueue == null || slideActionQueue.Count == 0) return;
                 currentSlideAction = slideActionQueue.Dequeue();
-                Plugin.Log("Starting slide action to " + currentSlideAction.TargetPos + " (" + currentSlideAction.Duration.ToString("0.#") + "s.)", Plugin.LogLevel.Debug);
+                Plugin.Log("Starting slide action to " + currentSlideAction.TargetPos + " ("+currentSlideAction.Duration.ToString("0.#")+"s.)", Plugin.LogLevel.Debug);
             }
-
+            
             var progress = currentSlideAction.UpdateProgress(Time.deltaTime);
-            if (progress >= 1)
+            if(progress >= 1)
             {
-                if (slideActionQueue.Count >= 1)
+                if(slideActionQueue.Count >= 1)
                 {
                     currentSlideAction = slideActionQueue.Dequeue();
                     currentSlideAction.Progress = progress - 1;
@@ -118,7 +119,7 @@ namespace TwitchCameraMover
                 }
             }
 
-            cam.position = currentSlideAction.GetPos();
+            cam.position = currentSlideAction.GetPos(); 
             cam.LookAt(objToLookAt.transform);
 
             newCube.transform.position = cam.position;
@@ -132,8 +133,7 @@ namespace TwitchCameraMover
                 {
                     if (newCube.GetComponent<MeshRenderer>().enabled)
                         newCube.GetComponent<MeshRenderer>().enabled = false;
-                }
-                else
+                }else
                 {
                     if (!newCube.GetComponent<MeshRenderer>().enabled)
                         newCube.GetComponent<MeshRenderer>().enabled = true;
@@ -145,7 +145,7 @@ namespace TwitchCameraMover
             {
                 currentSlideAction = null;
                 Plugin.Log("slideaction progress finished. remaining queue: " + slideActionQueue.Count, Plugin.LogLevel.Debug);
-                if (slideActionQueue.Count > 0)
+                if(slideActionQueue.Count > 0)
                 {
                     currentSlideAction = slideActionQueue.Dequeue();
                     currentSlideAction.StartPos = cam.position;
@@ -154,7 +154,7 @@ namespace TwitchCameraMover
         }
 
         public void findCamera()
-        {
+        {   
             Plugin.Log("Finding the main camera", Plugin.LogLevel.Debug);
 
             int i = 0;

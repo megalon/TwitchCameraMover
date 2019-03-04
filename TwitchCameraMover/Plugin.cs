@@ -72,8 +72,7 @@ namespace TwitchCameraMover
             if (logLevel == LogLevel.Debug && debug)
             {
                 Console.WriteLine("[TwitchCameraMover] " + text);
-            }
-            else
+            } else
             {
                 Console.WriteLine("[TwitchCameraMover - " + logLevel + "] " + text);
             }

@@ -95,6 +95,50 @@ namespace TwitchCameraMover
                     return;
                 }
             }
+            else if (command.Equals("slide"))
+            {
+                if (args.Length < 6)
+                {
+                    Plugin.Log("Invalid args for command " + command, Plugin.LogLevel.Info);
+                    twitch.SendChatMessage("USAGE: !slide cam x y z speed");
+                    twitch.SendChatMessage("EXAMPLE: !slide cam 1 -3 2 2");
+                    return;
+                }
+
+                string objectToMove = null;
+                float xPos;
+                float yPos;
+                float zPos;
+                float speed;
+                // Example
+                // !move cam 100 100 100
+                try
+                {
+                    objectToMove = args[1].ToLower();
+                    xPos = float.Parse(args[2]);
+                    yPos = float.Parse(args[3]);
+                    zPos = float.Parse(args[4]);
+                    speed = float.Parse(args[5]);
+                }
+                catch
+                {
+                    Plugin.Log("Error parsing commands! Format should be {command object float float float}: " + command, Plugin.LogLevel.Info);
+                    twitch.SendChatMessage("USAGE: !move name x y z");
+                    twitch.SendChatMessage("EXAMPLE: !move cam 2 0 1");
+                    return;
+                }
+
+                if (objectToMove.Equals("cam") || objectToMove.Equals("camera"))
+                {
+                    CameraMover.Instance.slideCamera(xPos, yPos, zPos, speed);
+                }
+                else
+                {
+                    Plugin.Log("Invalid object name for command: " + command, Plugin.LogLevel.Info);
+                    sendListOfValidObjects();
+                    return;
+                }
+            }
             else
             {
                 Plugin.Log("Invalid command: " + command, Plugin.LogLevel.Info);
