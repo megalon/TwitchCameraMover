@@ -98,7 +98,7 @@ namespace TwitchCameraMover
             else
             {
                 Plugin.Log("Invalid command: " + command, Plugin.LogLevel.Info);
-                sendListOfValidCommands();
+                //sendListOfValidCommands();
                 return;
             }
         }
