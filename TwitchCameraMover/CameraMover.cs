@@ -60,7 +60,7 @@ namespace TwitchCameraMover
         {
             if (CameraMover.Instance == null)
             {
-                Config = new CameraMoverConfig();
+                Config = CameraMoverConfig.Initialize(); // new CameraMoverConfig();
                 CameraMover.Instance = this;
                 DontDestroyOnLoad(base.gameObject);
                 slideActionQueue = new Queue<SlideAction>();
